@@ -28,13 +28,17 @@
 rm(list = ls())
 
 # load required libraries
+install.packages("randomForest")
+install.packages('mlbench')
+install.packages('caret')
 library(dplyr)
 library(randomForest)
 library(mlbench)
 library(caret)
 
 # set working directory
-setwd("~/Drobox/GitHub/Text-as-Data-Lab-Spring-2019/W6_03_07_19/")
+getwd()
+setwd("/Users/duchang/LABtext/Text-as-Data-Lab-Spring-2019/W6_03_07_19")
 
 #----------------------------------------
 # 1. Load, clean and inspect data        ---
@@ -78,12 +82,12 @@ library(quanteda)
 # create document feature matrix
 news_dfm <- dfm(news_samp$text, stem = TRUE, remove_punct = TRUE, remove = stopwords("english")) %>% convert("matrix")
 
-# keep tokens that appear in at least 5 headlines
+# keep tokens that appear in at least 5 headlines 
 presen_absent <- news_dfm 
 presen_absent[presen_absent > 0] <- 1
 feature_count <- apply(presen_absent, 2, sum)
 features <- names(which(feature_count > 5))
-news_dfm <- news_dfm[,features]
+news_dfm <- news_dfm[,features] # feature selection
 
 # caret package has it's own partitioning function
 set.seed(1984)
@@ -108,6 +112,7 @@ head(rownames(token_importance)[order(-token_importance)])
 
 # print results
 print(rf.base)
+# OOB: out of bag error
 
 # plot importance
 # gini impurity = how "pure" is given node ~ class distribution
@@ -118,7 +123,8 @@ varImpPlot(rf.base, n.var = 10, main = "Variable Importance")
 #----------------------------------------
 # 4. RandomForest Using Caret            ---
 #----------------------------------------
-trainControl <- trainControl(method = "cv", number = 5)
+install.packages('e1071')
+trainControl <- trainControl(method = "cv", number = 5) # cross validation 5 times
 metric <- "Accuracy"
 mtry <- sqrt(ncol(train_x))
 ntree = 51  
