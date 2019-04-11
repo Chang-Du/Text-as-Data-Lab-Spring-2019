@@ -5,12 +5,12 @@
 
 # Set up workspace
 rm(list = ls())
-
-setwd("~/Drobox/GitHub/Text-as-Data-Lab-Spring-2019/W9_04_11_19/")
+getwd()
+setwd("/Users/duchang/NYU CUSP/Text as Data/Text-as-Data-Lab-Spring-2019/W9_04_11_19")
 
 # Loading packages
-#install.packages("lsa")
-#install.packages("factoextra")
+install.packages("lsa")
+install.packages("factoextra")
 
 library(quanteda)
 library(quanteda.corpora)
